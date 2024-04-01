@@ -1,10 +1,8 @@
 package com.micewine.emu.overlay;
 
-import static android.view.KeyEvent.*;
+public class XKeyCodes {
 
-public class XkeyCodes {
-    
-    
+
 //         4   /* ANDROID_KEYCODE_BACK */] = KEY_ESC,
 //        [ 7   /* ANDROID_KEYCODE_0 */] = KEY_0,
 //        [ 8   /* ANDROID_KEYCODE_1 */] = KEY_1,
@@ -149,12 +147,12 @@ public class XkeyCodes {
 //        [ 210  /* ANDROID_KEYCODE_CALCULATOR */] = KEY_CALC,
 //
 //    
-    
-    
-    // TODO: define XkeyCodes
+
+
+    // TODO: define XKeyCodes
     public static final int DPAD_UP = 19;
     public static final int DPAD_DOWN = 20;
-   public static final int DPAD_LEFT = 21;
+    public static final int DPAD_LEFT = 21;
     public static final int DPAD_RIGHT = 22;
     public static final int ESC = 4;
 }
