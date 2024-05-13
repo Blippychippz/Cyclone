@@ -29,20 +29,15 @@ class SettingsFragment : Fragment() {
         val settingsList: MutableList<SettingsList> = ArrayList()
         val adapterSettings = AdapterSettings(settingsList, requireContext())
         recyclerView.setAdapter(adapterSettings)
-        var person = SettingsList(
-            R.string.settings_title,
-            R.string.settings_description,
-            R.drawable.ic_settings_outline
-        )
+        var person: SettingsList?
+
+        person = SettingsList(R.string.settings_title, R.string.settings_description, R.drawable.ic_settings_outline)
         settingsList.add(person)
-        person =
-            SettingsList(R.string.log_title, R.string.log_description, R.drawable.ic_log)
+
+        person = SettingsList(R.string.log_title, R.string.log_description, R.drawable.ic_log)
         settingsList.add(person)
-        person = SettingsList(
-            R.string.about_title,
-            R.string.about_description,
-            R.drawable.ic_info_outline
-        )
+
+        person = SettingsList(R.string.about_title, R.string.about_description, R.drawable.ic_info_outline)
         settingsList.add(person)
     }
 }
