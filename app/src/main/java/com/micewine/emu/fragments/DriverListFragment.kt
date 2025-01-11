@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.micewine.emu.R
 import com.micewine.emu.activities.MainActivity.Companion.appRootDir
 import com.micewine.emu.adapters.AdapterRatPackage
+import com.micewine.emu.adapters.AdapterRatPackage.Companion.DRIVER
 import java.io.File
 
 class DriverListFragment : Fragment() {
-    private val ratList: MutableList<AdapterRatPackage.DriverItem> = ArrayList()
+    private val ratList: MutableList<AdapterRatPackage.Item> = ArrayList()
     private var rootView: View? = null
     private var recyclerView: RecyclerView? = null
 
@@ -35,7 +36,7 @@ class DriverListFragment : Fragment() {
         ratList.clear()
 
         File("$appRootDir/packages").listFiles()?.forEach { file ->
-            if (file.isDirectory) {
+            if (file.isDirectory && file.name.startsWith("VulkanDriver-")) {
                 val lines = File("$file/pkg-header").readLines()
 
                 val name = lines[0].substringAfter("=")
@@ -47,6 +48,6 @@ class DriverListFragment : Fragment() {
     }
 
     private fun addToAdapter(title: String, description: String, driverFolderId: String) {
-        ratList.add(AdapterRatPackage.DriverItem(title, description, driverFolderId))
+        ratList.add(AdapterRatPackage.Item(title, description, driverFolderId, DRIVER))
     }
 }
