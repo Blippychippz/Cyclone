@@ -27,7 +27,7 @@
         <activity
             android:name=".activities.WelcomeActivity"
             android:theme="@style/Theme.MiceWine"
-            android:configChanges="keyboard|keyboardHidden|navigation|touchscreen"
+            android:configChanges="fontScale|orientation|screenSize|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|screenLayout|touchscreen|uiMode|smallestScreenSize|density"
             android:exported="false">
         </activity>
         <activity
