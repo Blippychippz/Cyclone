@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WineWrapper {
-    private static final String IS_BOX64 = deviceArch.equals("x86_64") ? "" : "box64";
+    public static final String IS_BOX64 = deviceArch.equals("x86_64") ? "" : "box64";
 
     public static String getCpuHexMask(String cpuAffinityMask) {
         int availCpus = Runtime.getRuntime().availableProcessors();

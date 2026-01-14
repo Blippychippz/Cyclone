@@ -5,11 +5,14 @@ import static com.micewine.emu.activities.GeneralSettingsActivity.WINE_DPI;
 import static com.micewine.emu.activities.GeneralSettingsActivity.WINE_DPI_DEFAULT_VALUE;
 import static com.micewine.emu.activities.MainActivity.appRootDir;
 import static com.micewine.emu.activities.MainActivity.preferences;
+import static com.micewine.emu.activities.MainActivity.ratPackagesDir;
 import static com.micewine.emu.activities.MainActivity.selectedWine;
 import static com.micewine.emu.activities.MainActivity.unixUsername;
 import static com.micewine.emu.activities.MainActivity.winePrefix;
 import static com.micewine.emu.activities.MainActivity.winePrefixesDir;
 import static com.micewine.emu.adapters.AdapterPreset.selectedPresetId;
+import static com.micewine.emu.core.EnvVars.getEnv;
+import static com.micewine.emu.core.WineWrapper.IS_BOX64;
 import static com.micewine.emu.utils.FileUtils.copyRecursively;
 import static com.micewine.emu.utils.FileUtils.deleteDirectoryRecursively;
 import static com.micewine.emu.core.ShellLoader.runCommand;
@@ -101,6 +104,14 @@ public class WinePrefixManagerFragment extends Fragment {
         winePrefix = name;
     }
 
+    private static void wineboot() {
+        boolean skipMono = !(new File(ratPackagesDir + "/" + selectedWine + "/files/wine/share/wine/mono").exists());
+
+        runCommand(
+                getEnv() + (skipMono ? "WINEDLLOVERRIDES=mscoree=d" : "") + "WINEPREFIX='" + winePrefixesDir + "/" + winePrefix + "' " + IS_BOX64 + " wine wineboot" , true
+        );
+    }
+
     public static void createWinePrefix(String name, String wineId) {
         File winePrefix = getWinePrefixFile(name);
         if (!winePrefix.exists()) {
@@ -110,13 +121,7 @@ public class WinePrefixManagerFragment extends Fragment {
             File userSharedFolder = new File("/storage/emulated/0/MiceWine");
             boolean isProton = new File(driveC, "users/steamuser").exists();
 
-            File wineUserDir;
-            if (isProton) {
-                wineUserDir = new File(driveC, "users/steamuser");
-            } else {
-                wineUserDir = new File(driveC, "users/" + unixUsername);
-            }
-
+            File wineUserDir = new File(driveC, "users/" + (isProton ? "steamuser" : unixUsername));
             File localAppData = new File(wineUserDir, "AppData");
             File sharedAppData = new File(userSharedFolder, "AppData");
             File localSavedGames = new File(wineUserDir, "Saved Games");
@@ -135,7 +140,7 @@ public class WinePrefixManagerFragment extends Fragment {
 
             selectedWine = wineId;
 
-            wine("wineboot");
+            wineboot();
 
             copyRecursively(coreFonts, wineFontsDir);
             copyRecursively(localAppData, sharedAppData);
