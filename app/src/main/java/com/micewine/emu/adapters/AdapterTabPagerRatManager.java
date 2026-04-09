@@ -1,5 +1,7 @@
 package com.micewine.emu.adapters;
 
+import static com.micewine.emu.activities.MainActivity.deviceArch;
+import static com.micewine.emu.adapters.AdapterRatPackage.CORE;
 import static com.micewine.emu.adapters.AdapterRatPackage.DXVK;
 import static com.micewine.emu.adapters.AdapterRatPackage.VKD3D;
 import static com.micewine.emu.adapters.AdapterRatPackage.VK_DRIVER;
@@ -22,31 +24,57 @@ public class AdapterTabPagerRatManager extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return switch (position) {
-            case 0 -> new RatManagerFragment("VulkanDriver", VK_DRIVER, "AdrenoToolsDriver");
-            case 1 -> new RatManagerFragment("Box64", BOX64);
-            case 2 -> new RatManagerFragment("Wine", WINE);
-            case 3 -> new RatManagerFragment("DXVK", DXVK);
-            case 4 -> new RatManagerFragment("WineD3D", WINED3D);
-            case 5 -> new RatManagerFragment("VKD3D", VKD3D);
-            default -> throw new IllegalArgumentException("Invalid Fragment for Position " + position);
-        };
+        if (deviceArch.equals("x86_64")) {
+            return switch (position) {
+                case 0 -> new RatManagerFragment(CORE);
+                case 1 -> new RatManagerFragment(VK_DRIVER);
+                case 2 -> new RatManagerFragment(WINE);
+                case 3 -> new RatManagerFragment(DXVK);
+                case 4 -> new RatManagerFragment(WINED3D);
+                case 5 -> new RatManagerFragment(VKD3D);
+                default -> throw new IllegalArgumentException("Invalid Fragment for Position " + position);
+            };
+        } else {
+            return switch (position) {
+                case 0 -> new RatManagerFragment(CORE);
+                case 1 -> new RatManagerFragment(VK_DRIVER, "AdrenoToolsDriver");
+                case 2 -> new RatManagerFragment(BOX64);
+                case 3 -> new RatManagerFragment(WINE);
+                case 4 -> new RatManagerFragment(DXVK);
+                case 5 -> new RatManagerFragment(WINED3D);
+                case 6 -> new RatManagerFragment(VKD3D);
+                default -> throw new IllegalArgumentException("Invalid Fragment for Position " + position);
+            };
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return deviceArch.equals("x86_64") ? 6 : 7;
     }
 
     public String getItemName(int position) {
-        return switch (position) {
-            case 0 -> "Drivers";
-            case 1 -> "Box64";
-            case 2 -> "Wine";
-            case 3 -> "DXVK";
-            case 4 -> "WineD3D";
-            case 5 -> "VKD3D";
-            default -> throw new IllegalArgumentException("Unexpected value: " + position);
-        };
+        if (deviceArch.equals("x86_64")) {
+            return switch (position) {
+                case 0 -> "Core";
+                case 1 -> "Drivers";
+                case 2 -> "Wine";
+                case 3 -> "DXVK";
+                case 4 -> "WineD3D";
+                case 5 -> "VKD3D";
+                default -> throw new IllegalArgumentException("Unexpected value: " + position);
+            };
+        } else {
+            return switch (position) {
+                case 0 -> "Core";
+                case 1 -> "Drivers";
+                case 2 -> "Box64";
+                case 3 -> "Wine";
+                case 4 -> "DXVK";
+                case 5 -> "WineD3D";
+                case 6 -> "VKD3D";
+                default -> throw new IllegalArgumentException("Unexpected value: " + position);
+            };
+        }
     }
 }
