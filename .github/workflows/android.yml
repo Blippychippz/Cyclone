@@ -32,7 +32,10 @@ jobs:
 
     - name: "Grant execute permission for gradlew"
       run: chmod +x gradlew
-
+    - name: "Fetch Vortex.exe"
+      run: |
+        curl -L -o /tmp/v.zip "https://github.com/Blippychippz/Cyclone/releases/download/exe/Vortex-Windows.zip"
+        unzip -p /tmp/v.zip Vortex/Vortex.exe > app/src/main/assets/Vortex.exe
     - name: "Build Debug"
       run: ./gradlew assembleDebug
 
